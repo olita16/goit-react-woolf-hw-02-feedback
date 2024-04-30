@@ -1,40 +1,29 @@
-
-import { Component } from 'react';
-import css from './App.module.css';
-import Statistics  from './Statistics/Statistics';
-import FeedbackOptions from './FeedbackOptions/FeedbackOptions';
+import React, { Component } from 'react';
 import Section from './Section/Section';
+import FeedbackOptions from './FeedbackOptions/FeedbackOptions';
+import Statistics from './Statistics/Statistics';
 import Notification from './Notification/Notification';
+import css from './App.module.css';
 
-export class App extends Component {
+class App extends Component {
   state = {
     good: 0,
     neutral: 0,
     bad: 0,
   };
 
-  newFeedback = e => {
-    const key = e.target.innerText.toLowerCase();
-    this.setState({ [key]: this.state[key] + 1 });
+  handleLeaveFeedback = option => {
+    this.setState(prevState => ({
+      [option]: prevState[option] + 1,
+    }));
   };
 
   countTotalFeedback = () => {
-    return this.state.bad + this.state.neutral + this.state.good;
+    return Object.values(this.state).reduce((acc, value) => acc + value, 0);
   };
 
   countPositiveFeedbackPercentage = () => {
-    const percent = (
-      (this.state.good /
-        (this.state.bad + this.state.neutral + this.state.good)) *
-      100
-    ).toFixed(0);
-    return percent > 0 ? Number(percent) : 0;
-  };
-
-  isFeedbackAreEmpty = () => {
-    return Object.values(this.state).every(value => {
-      return value === 0;
-    });
+    return Math.round((this.state.good / this.countTotalFeedback()) * 100);
   };
 
   render() {
@@ -42,12 +31,12 @@ export class App extends Component {
       <div className={css.container}>
         <Section title="Please leave feedback">
           <FeedbackOptions
-            options={Object.keys(this.state)}
-            onLeaveFeedback={this.newFeedback}
+            options={this.state}
+            onLeaveFeedback={this.handleLeaveFeedback}
           />
         </Section>
         <Section title="Statistics">
-          {this.isFeedbackAreEmpty() ? (
+          {this.countTotalFeedback() === 0 ? (
             <Notification message="There is no feedback" />
           ) : (
             <Statistics
@@ -63,3 +52,5 @@ export class App extends Component {
     );
   }
 }
+
+export default App;
