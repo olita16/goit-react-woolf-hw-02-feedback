@@ -8,9 +8,9 @@
 
 .feedbackButton {
   border-radius: 10px;
-  background-color: #c9cafa;
+  background-color: #d5d5f8;
   padding: 8px 16px;
-  border: 1px solid black;
+  border: 1px solid rgb(54, 54, 54);
   width: 50;
   font-size: 16px;
   font-weight: 600;
