@@ -1,4 +1,4 @@
-import css from '../Section/Section.module.css';
+import css from '../Section/section.module.css';
 
 const Section = ({ title, children }) => (
   <section className={css.sectionOne}>
